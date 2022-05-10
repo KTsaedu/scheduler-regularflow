@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<flow name="scheduler-regularflowFlow" doc:id="4d246c9c-e95d-4593-a958-c2486dd63970" >
+		<scheduler doc:name="Scheduler" doc:id="7c4ac8ab-2357-4b81-9668-9a7ff7bacdad" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="10" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</scheduler>
+		<ee:transform doc:name="Transform Message" doc:id="dd582d69-2afb-4d36-b17e-0d949a52bccf" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{ 
+	'triggered at': now()
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<file:write doc:name="Write" doc:id="f092eaaf-c601-42f8-b2d3-d0950eb068c9" path="C:\MuleSoft\scheduler-regularflow.json" mode="APPEND"/>
+		<logger level="INFO" doc:name="Logger" doc:id="a3c3581c-193e-4a40-b3cb-9b22b437e0b3" message="Triggered at #[now()]"/>
+	</flow>
+</mule>
